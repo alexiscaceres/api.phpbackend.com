@@ -22,9 +22,7 @@ class ViewJson
 
 	public function getJson($json){
 
-        if ($this->estado) {
-            http_response_code($this->estado);
-        }
+        //http_response_code($this->estado);
         header('Content-Type: application/json; charset=utf8');
         echo json_encode($json, JSON_PRETTY_PRINT);
         exit;

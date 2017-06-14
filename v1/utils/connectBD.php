@@ -7,7 +7,6 @@ require_once './model/mysql_config.php';
 */
 class ConnectBD
 {
-	
 	private static $db = null;
 	private static $pdo = null;
 

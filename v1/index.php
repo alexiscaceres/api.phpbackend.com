@@ -10,7 +10,6 @@ const ESTADO_URL_INCORRECTA = 2;
 const ESTADO_EXISTENCIA_RECURSO = 3;
 const ESTADO_METODO_NO_PERMITIDO = 4;
 
-
 $vista = new ViewJson();
 
 // manejador de excepciones
@@ -23,7 +22,6 @@ set_exception_handler(function ($exception) use ($vista){
 			} else {
 				$vista->setEstado(500);
 			}
-
 			$vista->getJson($msjException);
 		}); 
 
@@ -34,10 +32,6 @@ if (isset($_GET['PATH_INFO'])) {
 	$method = strtolower($_SERVER['REQUEST_METHOD']);
 	$control = strtolower(array_shift($peticion));
 
-    echo "$peticion \n";
-    echo "$method \n";
-    echo "$control \n";
-
     switch ($control) {
         case 'usuarios':
             $controlUsuario = new controlUsuario();
@@ -45,8 +39,9 @@ if (isset($_GET['PATH_INFO'])) {
             break;
 
         case 'contactos':
+
         default:
-            # code...
+        phpinfo();
             break;
     }
 

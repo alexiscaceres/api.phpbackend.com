@@ -316,10 +316,10 @@ class Usuario
 
 	}
 
-	public  function  validarIngreso($usuario){
+	public  function  ingresar($usuario){
 
-        $this->setCorreo($usuario->correo);
-        $this->setContrasenha($usuario->contrasena);
+        $this->setCorreo($usuario->correo); //($usuario->{'correo'});
+        $this->setContrasenha($usuario->contrasena); //($usuario->{'contrasena'});
 
         try{
 
@@ -336,8 +336,6 @@ class Usuario
             if ($result){
 
                 $data = $sqlPrepare->fetch();
-
-                echo "esto es data::::".$data;
 
                 if ( strcmp($this->getContrasenha(), $data['contrasena'] ) === 0 ){
 
@@ -357,6 +355,111 @@ class Usuario
 
         }
 
+    }
+
+    /**
+     * @param $usuario
+     * @return mixed
+     */
+    public function actualizar($usuario){
+
+        $this->setPrimerNombre($usuario->primerNombre);
+        $this->setSegundoNombre($usuario->segundoNombre);
+        $this->setPrimerApellido($usuario->primerApellido);
+        $this->setSegundoApellido($usuario->segundoApellido);
+        $this->setCorreo($usuario->correo);
+        $this->setFechaNacimiento($usuario->fechaNacimiento);
+        $this->setCiudad($usuario->ciudad);
+        $this->setDireccion($usuario->direccion);
+        $this->setNumId($usuario->numId);
+        $this->setTipoId($usuario->tipoId);
+        $this->setTelefono($usuario->telefono);
+        $this->setOcupacion($usuario->ocupación);
+        $this->setContrasenha($usuario->contrasena);
+        $this->setEmail($usuario->email);
+
+        try{
+
+            /** @var PDO $pdo */
+            $pdo = ConnectBD::getInstance()->getBD();
+
+            $sql = 'UPDATE usuario SET primerNombre = ?,
+                                       segundoNombre = ?,
+                                       primerApellido = ?,
+                                       segundoApellido = ?,
+                                       correo = ?,
+                                       fechaNacimiento = ?,
+                                       ciudad = ?,
+                                       direccion = ?,
+                                       numId = ?,
+                                       tipoId = ?,
+                                       telefono = ?,
+                                       ocupacion = ?
+                                   WHERE idUsuario = ?';
+
+            $sqlPrepare = $pdo->prepare($sql);
+            $sqlPrepare->bindParam(1, $this->getPrimerNombre());
+            $sqlPrepare->bindParam(2, $this->getSegundoNombre());
+            $sqlPrepare->bindParam(3, $this->getPrimerApellido());
+            $sqlPrepare->bindParam(4, $this->getSegundoApellido());
+            $sqlPrepare->bindParam(5, $this->getCorreo());
+            $sqlPrepare->bindParam(6, $this->getFechaNacimiento());
+            $sqlPrepare->bindParam(7, $this->getCiudad());
+            $sqlPrepare->bindParam(8, $this->getDireccion());
+            $sqlPrepare->bindParam(9, $this->getNumId());
+            $sqlPrepare->bindParam(10, $this->getTipoId());
+            $sqlPrepare->bindParam(11, $this->getTelefono());
+            $sqlPrepare->bindParam(12, $this->getOcupacion());
+            $sqlPrepare->bindParam(13, $this->getId());
+
+            return $sqlPrepare->execute();
+
+        }catch (PDOException $exception ){
+            throw new Exception("Error al actualizar usuario", $exception->getCode());
+        }
+
+    }
+
+
+    public function obtener($usuario){
+
+        try{
+
+            /** @var PDO $pdo */
+            $pdo = ConnectBD::getInstance()->getBD();
+
+            $sql = 'SELECT * FROM usuario WHERE idUsuario = ? LIMIT 1';
+
+            $sqlPrepare = $pdo->prepare($sql);
+            $sqlPrepare->bindParam(1, $usuario->id);
+
+            $result = $sqlPrepare->execute();
+
+            if ($result){
+
+                $data = $sqlPrepare->fetch();
+
+                $this->setPrimerNombre($data['primerNombre']);
+                $this->setSegundoNombre($data['segundoNombre']);
+                $this->setPrimerApellido($data['primerApellido']);
+                $this->setSegundoApellido($data['segundoApellido']);
+                $this->setCorreo($data['correo']);
+                $this->setFechaNacimiento($data['fechaNacimiento']);
+                $this->setCiudad($data['ciudad']);
+                $this->setDireccion($data['direccion']);
+                $this->setNumId($data['numId']);
+                $this->setTipoId($data['tipoId']);
+                $this->setTelefono($data['telefono']);
+                $this->setOcupacion($data['ocupacion']);
+                $this->setEmail($data['correo']);
+
+            }else{
+
+            }
+
+        }catch (PDOException $exception ){
+            throw new Exception("Error al buscar usuario", $exception->getCode());
+        }
     }
 }
 

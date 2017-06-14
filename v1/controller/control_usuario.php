@@ -5,7 +5,7 @@
 */
 class ControlUsuario
 {
-	
+
 	public function __construct()
 	{
 		require_once './model/usuario.php';
@@ -38,7 +38,7 @@ class ControlUsuario
 				break;
 			
 			case 'login':
-                if ($usuario->validarIngreso($jsonUsuario)) {
+                if ($usuario->ingresar($jsonUsuario)) {
 
                     http_response_code(200);
                     $response = ["estado" => 1, "mensaje" => "Usuario conectado"];
@@ -50,12 +50,36 @@ class ControlUsuario
 
 				break;
 
+            case 'get':
+
+
 			default:
 				throw new Exception("acción no permitida", 400);
 				break;
 		}
 
 	}
+
+	public  static  function  put($request){
+
+        $usuario = new Usuario();
+
+        $body = file_get_contents('php://input');
+        $jsonUsuario = json_decode($body);
+
+        if ( $usuario->actualizar($jsonUsuario)){
+            http_response_code(200);
+
+            $response = ["estado" => 1, "mensaje" => "Usuario Actualizado"];
+            return $response;
+
+        }else{
+            throw new Exception("Error al actualizar usuario", 400);
+        }
+
+
+
+    }
 
 }
 
