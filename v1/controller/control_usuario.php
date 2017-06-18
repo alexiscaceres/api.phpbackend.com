@@ -18,7 +18,7 @@ class ControlUsuario
         $usuario = new Usuario();
 
         $body = file_get_contents('php://input');
-        $jsonUsuario = json_decode($body);
+        $jsonUsuario = json_decode($body, true);
 
 		$action = strtolower($request[0]);
 
@@ -51,6 +51,17 @@ class ControlUsuario
 				break;
 
             case 'get':
+                $arrayUser = $usuario->obtener($jsonUsuario);
+
+                if (!is_null($usuario->getId())){
+                    http_response_code(200);
+                    $response = ["estado" => 1, "usuario" => $arrayUser];
+                    return $response;
+
+                }else{
+                    throw new Exception("Usuario no encontrado", 400);
+                }
+
 
 
 			default:
@@ -65,7 +76,7 @@ class ControlUsuario
         $usuario = new Usuario();
 
         $body = file_get_contents('php://input');
-        $jsonUsuario = json_decode($body);
+        $jsonUsuario = json_decode($body, true);
 
         if ( $usuario->actualizar($jsonUsuario)){
             http_response_code(200);
@@ -76,7 +87,6 @@ class ControlUsuario
         }else{
             throw new Exception("Error al actualizar usuario", 400);
         }
-
 
 
     }

@@ -318,8 +318,10 @@ class Usuario
 
 	public  function  ingresar($usuario){
 
-        $this->setCorreo($usuario->correo); //($usuario->{'correo'});
-        $this->setContrasenha($usuario->contrasena); //($usuario->{'contrasena'});
+        //$this->setCorreo($usuario->correo);  //($usuario->{'correo'})
+        $this->setCorreo($usuario['correo']);
+        //$this->setContrasenha($usuario->contrasena);  (//($usuario->{'contrasena'})
+        $this->setContrasenha($usuario['contrasena']);
 
         try{
 
@@ -431,14 +433,14 @@ class Usuario
             $sql = 'SELECT * FROM usuario WHERE idUsuario = ? LIMIT 1';
 
             $sqlPrepare = $pdo->prepare($sql);
-            $sqlPrepare->bindParam(1, $usuario->id);
-
+            $sqlPrepare->bindParam(1, $usuario['id']);
             $result = $sqlPrepare->execute();
 
             if ($result){
 
                 $data = $sqlPrepare->fetch();
 
+                $this->id = $data['idUsuario'];
                 $this->setPrimerNombre($data['primerNombre']);
                 $this->setSegundoNombre($data['segundoNombre']);
                 $this->setPrimerApellido($data['primerApellido']);
@@ -453,8 +455,7 @@ class Usuario
                 $this->setOcupacion($data['ocupacion']);
                 $this->setEmail($data['correo']);
 
-            }else{
-
+                return $data;
             }
 
         }catch (PDOException $exception ){

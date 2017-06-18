@@ -24,7 +24,7 @@ class ViewJson
 
         //http_response_code($this->estado);
         header('Content-Type: application/json; charset=utf8');
-        echo json_encode($json, JSON_PRETTY_PRINT);
+        echo json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES );
         exit;
 	}
 }
