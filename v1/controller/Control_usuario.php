@@ -3,14 +3,11 @@
 /**
 * 
 */
-class ControlUsuario
-{
+class ControlUsuario {
 
-	public function __construct()
-	{
-		require_once './model/usuario.php';
+	public function __construct() {
+		require_once './model/Usuario.php';
 	}
-
 
 	/*obtener la acción a realizar en la petición a usuarios*/
 	public static function post($request){
@@ -23,6 +20,7 @@ class ControlUsuario
 		$action = strtolower($request[0]);
 
 		switch ($action) {
+
 			case 'create':
 
                 if ($usuario->crear($jsonUsuario)) {
@@ -36,7 +34,8 @@ class ControlUsuario
                 }
 
 				break;
-			
+
+
 			case 'login':
                 if ($usuario->ingresar($jsonUsuario)) {
 
@@ -50,19 +49,6 @@ class ControlUsuario
 
 				break;
 
-            case 'get':
-                $arrayUser = $usuario->obtener($jsonUsuario);
-
-                if (!is_null($usuario->getId())){
-                    http_response_code(200);
-                    $response = ["estado" => 1, "usuario" => $arrayUser];
-                    return $response;
-
-                }else{
-                    throw new Exception("Usuario no encontrado", 400);
-                }
-
-
 
 			default:
 				throw new Exception("acción no permitida", 400);
@@ -71,14 +57,34 @@ class ControlUsuario
 
 	}
 
-	public  static  function  put($request){
+	public static function get($request){
+
+	    $usuario = new Usuario();
+        $idUser = strtolower($request[0]);
+
+        $arrayUser = $usuario->obtener($idUser);
+
+        if (!is_null($usuario->getId())){
+            http_response_code(200);
+            $response = ["estado" => 1, "usuario" => $arrayUser];
+            return $response;
+
+        }else{
+            throw new Exception("Usuario no encontrado", 400);
+        }
+
+    }
+
+	public static function put($request){
 
         $usuario = new Usuario();
 
         $body = file_get_contents('php://input');
         $jsonUsuario = json_decode($body, true);
 
-        if ( $usuario->actualizar($jsonUsuario)){
+        $idUser = strtolower($request[0]);
+
+        if ( $usuario->actualizar($idUser, $jsonUsuario)){
             http_response_code(200);
 
             $response = ["estado" => 1, "mensaje" => "Usuario Actualizado"];

@@ -1,9 +1,10 @@
 
 <?php  
 
-require_once 'controller/control_usuario.php';
-require_once 'utils/connectBD.php';
-require_once 'view/viewJson.php';
+require_once 'controller/Control_usuario.php';
+require_once 'controller/Control_contacto.php';
+require_once 'utils/ConnectBD.php';
+require_once 'view/ViewJson.php';
 
 //print ConnectBD::getInstance()->getBD()->errorCode();
 const ESTADO_URL_INCORRECTA = 2;
@@ -34,14 +35,16 @@ if (isset($_GET['PATH_INFO'])) {
 
     switch ($control) {
         case 'usuarios':
-            $controlUsuario = new controlUsuario();
+            $controlUsuario = new ControlUsuario();
             $vista->getJson($controlUsuario::$method($peticion));
             break;
 
         case 'contactos':
+            $controlContacto = new ControlContacto();
+            $vista->getJson($controlContacto::$method($peticion));
+            break;
 
         default:
-        phpinfo();
             break;
     }
 

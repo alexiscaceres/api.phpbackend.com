@@ -1,7 +1,7 @@
 <?php
 
 /**
-* 
+*
 */
 class Usuario
 {
@@ -18,7 +18,6 @@ class Usuario
 	private $tipoId;
 	private $telefono;
 	private $ocupacion;
-	private $email;
 	private $contrasenha;
 	
 	public function __construct()
@@ -229,22 +228,6 @@ class Usuario
     /**
      * @return mixed
      */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * @param mixed $email
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getContrasenha()
     {
         return $this->contrasenha;
@@ -260,20 +243,19 @@ class Usuario
 
 	public function crear($usuario)
 	{
-	    $this->setPrimerNombre($usuario->primerNombre);
-        $this->setSegundoNombre($usuario->segundoNombre);
-        $this->setPrimerApellido($usuario->primerApellido);
-        $this->setSegundoApellido($usuario->segundoApellido);
-        $this->setCorreo($usuario->correo);
-        $this->setFechaNacimiento($usuario->fechaNacimiento);
-        $this->setCiudad($usuario->ciudad);
-        $this->setDireccion($usuario->direccion);
-        $this->setNumId($usuario->numId);
-        $this->setTipoId($usuario->tipoId);
-        $this->setTelefono($usuario->telefono);
-        $this->setOcupacion($usuario->ocupación);
-        $this->setContrasenha($usuario->contrasena);
-        $this->setEmail($usuario->email);
+	    $this->setPrimerNombre( $usuario['primerNombre'] ); //$usuario->primerNombre);
+        $this->setSegundoNombre( $usuario['segundoNombre'] ); //$usuario->segundoNombre);
+        $this->setPrimerApellido( $usuario['primerApellido'] ); //$usuario->primerApellido);
+        $this->setSegundoApellido( $usuario['segundoApellido'] ); //$usuario->segundoApellido);
+        $this->setCorreo( $usuario['correo'] ); //$usuario->correo);
+        $this->setFechaNacimiento( $usuario['fechaNacimiento'] ); //$usuario->fechaNacimiento);
+        $this->setCiudad( $usuario['ciudad'] ); //$usuario->ciudad);
+        $this->setDireccion( $usuario['direccion'] ); //$usuario->direccion);
+        $this->setNumId( $usuario['numId'] ); //$usuario->numId);
+        $this->setTipoId( $usuario['tipoId'] ); //$usuario->tipoId);
+        $this->setTelefono( $usuario['telefono'] ); //$usuario->telefono);
+        $this->setOcupacion( $usuario['ocupacion'] ); //$usuario->ocupación);
+        $this->setContrasenha( $usuario['contrasena'] ); //$usuario->contrasena);
 
         try {
 
@@ -302,13 +284,7 @@ class Usuario
             $sqlPrepare->bindParam(12, $this->getTelefono());
             $sqlPrepare->bindParam(13, $this->getOcupacion());
 
-            $result = $sqlPrepare->execute();
-
-            if ($result) {
-                return TRUE;
-            }else{
-                return FALSE;
-            }
+            return $sqlPrepare->execute();
 
         }catch (PDOException $exception){
             throw new Exception("Error al crear usuario: ".$exception->getMessage() , 400 );
@@ -318,9 +294,7 @@ class Usuario
 
 	public  function  ingresar($usuario){
 
-        //$this->setCorreo($usuario->correo);  //($usuario->{'correo'})
         $this->setCorreo($usuario['correo']);
-        //$this->setContrasenha($usuario->contrasena);  (//($usuario->{'contrasena'})
         $this->setContrasenha($usuario['contrasena']);
 
         try{
@@ -363,22 +337,23 @@ class Usuario
      * @param $usuario
      * @return mixed
      */
-    public function actualizar($usuario){
+    public function actualizar($id, $usuario){
 
-        $this->setPrimerNombre($usuario->primerNombre);
-        $this->setSegundoNombre($usuario->segundoNombre);
-        $this->setPrimerApellido($usuario->primerApellido);
-        $this->setSegundoApellido($usuario->segundoApellido);
-        $this->setCorreo($usuario->correo);
-        $this->setFechaNacimiento($usuario->fechaNacimiento);
-        $this->setCiudad($usuario->ciudad);
-        $this->setDireccion($usuario->direccion);
-        $this->setNumId($usuario->numId);
-        $this->setTipoId($usuario->tipoId);
-        $this->setTelefono($usuario->telefono);
-        $this->setOcupacion($usuario->ocupación);
-        $this->setContrasenha($usuario->contrasena);
-        $this->setEmail($usuario->email);
+        //print_r($usuario);
+
+        $this->setPrimerNombre( $usuario['primerNombre']); //$usuario->primerNombre);
+        $this->setSegundoNombre( $usuario['segundoNombre']); //$usuario->segundoNombre);
+        $this->setPrimerApellido( $usuario['primerApellido']); //$usuario->primerApellido);
+        $this->setSegundoApellido( $usuario['segundoApellido']); //$usuario->segundoApellido);
+        $this->setCorreo( $usuario['correo']); //$usuario->correo);
+        $this->setFechaNacimiento( $usuario['fechaNacimiento']); //$usuario->fechaNacimiento);
+        $this->setCiudad( $usuario['ciudad']); //$usuario->ciudad);
+        $this->setDireccion( $usuario['direccion']); //$usuario->direccion);
+        $this->setNumId( $usuario['numId']); //$usuario->numId);
+        $this->setTipoId( $usuario['tipoId']); //$usuario->tipoId);
+        $this->setTelefono( $usuario['telefono']); //$usuario->telefono);
+        $this->setOcupacion( $usuario['ocupacion']); //$usuario->ocupación);
+        $this->setContrasenha( $usuario['contrasena']); //$usuario->contrasena);
 
         try{
 
@@ -412,7 +387,7 @@ class Usuario
             $sqlPrepare->bindParam(10, $this->getTipoId());
             $sqlPrepare->bindParam(11, $this->getTelefono());
             $sqlPrepare->bindParam(12, $this->getOcupacion());
-            $sqlPrepare->bindParam(13, $this->getId());
+            $sqlPrepare->bindParam(13, $id);
 
             return $sqlPrepare->execute();
 
@@ -423,7 +398,7 @@ class Usuario
     }
 
 
-    public function obtener($usuario){
+    public function obtener($id){
 
         try{
 
@@ -433,12 +408,12 @@ class Usuario
             $sql = 'SELECT * FROM usuario WHERE idUsuario = ? LIMIT 1';
 
             $sqlPrepare = $pdo->prepare($sql);
-            $sqlPrepare->bindParam(1, $usuario['id']);
+            $sqlPrepare->bindParam(1, $id);
             $result = $sqlPrepare->execute();
 
             if ($result){
 
-                $data = $sqlPrepare->fetch();
+                $data = $sqlPrepare->fetch(PDO::FETCH_ASSOC);
 
                 $this->id = $data['idUsuario'];
                 $this->setPrimerNombre($data['primerNombre']);
@@ -453,8 +428,7 @@ class Usuario
                 $this->setTipoId($data['tipoId']);
                 $this->setTelefono($data['telefono']);
                 $this->setOcupacion($data['ocupacion']);
-                $this->setEmail($data['correo']);
-
+                $this->setCorreo($data['correo']);
                 return $data;
             }
 
