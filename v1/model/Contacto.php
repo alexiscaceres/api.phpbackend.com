@@ -152,7 +152,37 @@ class Contacto
         }
     }
 
-    public function actualizar($contacto){
+    public function actualizar($idUsuario, $idContacto, $contacto){
+
+        $this->setFecha($contacto['fecha']);
+        $this->setHora($contacto['hora']);
+        $this->setLugar($contacto['lugar']);
+        $this->setActiva($contacto['activa']);
+
+        try{
+
+            $pdo = ConnectBD::getInstance()->getBD();
+
+            $sql = "UPDATE libreta SET fecha = ?,
+                                       hora = ?,
+                                       lugar = ?,
+                                       activa = ?
+                                   WHERE idUsuario1 = ?
+                                     AND idUsuario2 = ?";
+
+            $sqlPrepare = $pdo->prepare($sql);
+            $sqlPrepare->bindParam(1, $this->getFecha());
+            $sqlPrepare->bindParam(2, $this->getHora());
+            $sqlPrepare->bindParam(3, $this->getLugar());
+            $sqlPrepare->bindParam(4, $this->getActiva());
+            $sqlPrepare->bindParam(5, $idUsuario);
+            $sqlPrepare->bindParam(6, $idContacto);
+
+            return $sqlPrepare->execute();
+
+        } catch (PDOException $exception){
+            throw new Exception("Error al actualizar contacto: ".$exception->getMessage() );
+        }
 
     }
 

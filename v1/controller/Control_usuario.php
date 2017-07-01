@@ -60,7 +60,7 @@ class ControlUsuario {
 	public static function get($request){
 
 	    $usuario = new Usuario();
-        $idUser = strtolower($request[0]);
+        $idUser = $request[0];
 
         $arrayUser = $usuario->obtener($idUser);
 
@@ -82,11 +82,11 @@ class ControlUsuario {
         $body = file_get_contents('php://input');
         $jsonUsuario = json_decode($body, true);
 
-        $idUser = strtolower($request[0]);
+        $idUser = $request[0];
 
         if ( $usuario->actualizar($idUser, $jsonUsuario)){
-            http_response_code(200);
 
+            http_response_code(200);
             $response = ["estado" => 1, "mensaje" => "Usuario Actualizado"];
             return $response;
 
