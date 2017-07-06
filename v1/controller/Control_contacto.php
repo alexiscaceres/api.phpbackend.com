@@ -42,8 +42,14 @@ class ControlContacto {
         //obtener ids para buscar datos de contactos
         $ids = explode(',', $request[0] );
 
-        $idUsuario = $ids[0];
-        $idContacto = $ids[1];
+        if (!empty($ids[0])){
+            $idUsuario = $ids[0];
+        }
+        if (!empty($ids[1])){
+            $idContacto = $ids[1];
+        }else{
+            $idContacto = NULL;
+        }
 
         if (empty($idUsuario)){
             throw new Exception("Usuario vacio", 400);
@@ -53,7 +59,7 @@ class ControlContacto {
 
         if (!empty( $contactos )){
             http_response_code(200);
-            $response = ["estado" => 1, "contactos" => $contactos];
+            $response = [ "contactos" => $contactos ];
             return $response;
 
         }else{

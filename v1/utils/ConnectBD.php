@@ -42,6 +42,7 @@ class ConnectBD
 				);
 
 			self::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		    self::$pdo->setAttribute(PDO::ATTR_ORACLE_NULLS, PDO::NULL_TO_STRING);
 		}
 
 		return self::$pdo;

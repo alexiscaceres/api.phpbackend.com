@@ -193,10 +193,22 @@ class Contacto
             $pdo = ConnectBD::getInstance()->getBD();
 
             if (is_null($idContacto)){
-                $sql = "SELECT * FROM libreta WHERE idusuario1 = ?";
+                //$sql = "SELECT * FROM libreta WHERE idusuario1 = ?";
+                $sql = "SELECT idUsuario2, primerNombre, 
+                          segundoNombre, primerApellido, 
+                          segundoApellido
+                          FROM libreta l
+                          INNER JOIN usuario u
+                          ON u.idUsuario = l.idUsuario2
+                          WHERE l.idUsuario1 = ?";
             } else {
-                $sql = "SELECT * FROM libreta WHERE idusuario1 = ?
-                                                AND idusuario2 = ?";
+                //$sql = "SELECT * FROM libreta WHERE idusuario1 = ?
+                //                                AND idusuario2 = ?";
+                $sql = "SELECT * FROM libreta l
+                          INNER JOIN  usuario u
+                          ON u.idUsuario = l.idUsuario2
+                          WHERE l.idUsuario1 = ?
+                            AND l.idUsuario2 = ?";
             }
 
             $sqlPrepare = $pdo->prepare($sql);
