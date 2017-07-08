@@ -66,7 +66,7 @@ class ControlUsuario {
 
         if (!is_null($usuario->getId())){
             http_response_code(200);
-            $response = ["estado" => 1, "usuario" => $arrayUser];
+            $response = ["usuario" => $arrayUser];
             return $response;
 
         }else{

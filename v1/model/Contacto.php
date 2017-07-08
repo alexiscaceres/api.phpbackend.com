@@ -6,8 +6,8 @@
  * Date: 29/06/2017
  * Time: 9:57 PM
  */
-class Contacto
-{
+class Contacto {
+
     private $idUsuario;
     private $idContacto;
     private $fecha;
